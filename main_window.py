@@ -9,6 +9,7 @@
 
 from stat_some_else import *
 from someelse import *
+from сurrent_сosts import *
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -59,22 +60,19 @@ class MainWindow(QtWidgets.QMainWindow):
         self.pushButton_5.setMaximumSize(QtCore.QSize(16777215, 30))
         self.pushButton_5.setObjectName("pushButton_5_payments")
         self.verticalLayout.addWidget(self.pushButton_5)
+        self.pushButton_5.clicked.connect(self.button_current_costs)
 
         self.pushButton_2 = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.pushButton_2.setMaximumSize(QtCore.QSize(16777215, 30))
         self.pushButton_2.setObjectName("pushButton_2_statistic")
         self.verticalLayout.addWidget(self.pushButton_2)
-
         self.pushButton_2.clicked.connect(self.button_statistic)
-
 
         self.pushButton_4 = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.pushButton_4.setMaximumSize(QtCore.QSize(16777215, 30))
         self.pushButton_4.setObjectName("Button_4_some_else")
         self.verticalLayout.addWidget(self.pushButton_4)
-
         self.pushButton_4.clicked.connect(self.button_some_else)
-
 
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(329, 229, 441, 211))
@@ -121,6 +119,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.label_3.setText(_translate("MainWindow", "   - перехід до Ваших фінансових справ"))
         self.label_5.setText(_translate("MainWindow", "   - статистика Ваших витрат"))
         self.label_4.setText(_translate("MainWindow", "  - ще для чогось"))
+
+    def button_current_costs(self):
+        self.dialog_CurrentCosts = CurrentCosts()
+        self.dialog_CurrentCosts.show()
 
     def button_statistic(self):
         # Request.show_other()

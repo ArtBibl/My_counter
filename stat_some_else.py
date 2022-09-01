@@ -13,9 +13,9 @@ class StatSomeElse(QWidget):
         self.setWindowTitle("Statistic by 'Other' table")
         # self.setGeometry(500, 400, 500, 300)
         self.data = Request.show_other()
-        self.tables()
+        self.tables_stat_other()
 
-    def tables(self):
+    def tables_stat_other(self):
         self.tableWidget = QTableWidget()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)  # not editable
         self.tableWidget.setRowCount(len(self.data))

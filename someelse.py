@@ -19,6 +19,7 @@ class SomeElse(QWidget):
         super().__init__()
         self.setObjectName("Dialog")
         self.resize(422, 240)
+        self.request = Request()
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
         self.buttonBox.setGeometry(QtCore.QRect(30, 180, 341, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
@@ -71,7 +72,7 @@ class SomeElse(QWidget):
                 coast = float(self.coast.text())
                 text_message = textbox_value + ": " + str(coast) + "грн."
                 QMessageBox.information(self, 'Успішний запис витрат!', text_message, QMessageBox.Ok, QMessageBox.Ok)
-                Request.add_other(textbox_value, coast)
+                self.request.add_other(textbox_value, coast)
                 self.name_payments.setText("")
             except ValueError:
                 QMessageBox.critical(self, 'Некоректна сума!',
