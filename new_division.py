@@ -10,16 +10,21 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
+
+from request_base import Request
 
 
 class NewDivision(QWidget):
     def __init__(self):
         super().__init__()
-        self.setObjectName("Dialog")
-        self.resize(400, 200)
+        self.setObjectName("new_div")
+        self.setWindowTitle("Новий розділ")
+        self.resize(400, 260)
+        self.request = Request()
+
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
-        self.buttonBox.setGeometry(QtCore.QRect(30, 110, 340, 90))
+        self.buttonBox.setGeometry(QtCore.QRect(30, 170, 340, 90))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
@@ -28,22 +33,80 @@ class NewDivision(QWidget):
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(False)
+        font.setWeight(50)
+
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.lineEdit = QtWidgets.QLineEdit(self)
-        self.lineEdit.setGeometry(QtCore.QRect(50, 80, 221, 21))
-        self.lineEdit.setObjectName("lineEdit")
+        self.label.setText("Введіть назву нового розділу")
 
-        self.retranslateui(self)
+        self.verticalLayoutWidget = QtWidgets.QWidget(self)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(50, 70, 260, 100))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
+
+        self.label_2 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.label_2.setObjectName("label_2")
+        self.label_2.setText("Скорочена назва нового розхділу")
+        self.verticalLayout.addWidget(self.label_2)
+
+        self.short_name_div = QtWidgets.QLineEdit(self.verticalLayoutWidget)
+        self.short_name_div.setObjectName("short_name_div")
+        self.short_name_div.setPlaceholderText("Им\'я нового розділу")
+        self.verticalLayout.addWidget(self.short_name_div)
+
+        self.label_3 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.label_3.setObjectName("label_3")
+        self.label_3.setText("Розширена назва розділу")
+        self.verticalLayout.addWidget(self.label_3)
+
+        self.full_name_div = QtWidgets.QLineEdit(self.verticalLayoutWidget)
+        self.full_name_div.setObjectName("full_name_div")
+        self.full_name_div.setPlaceholderText("Повна назва нового розділу")
+        self.verticalLayout.addWidget(self.full_name_div)
+
         self.buttonBox.accepted.connect(self.accept_click)
         self.buttonBox.rejected.connect(self.close)
-        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def retranslateui(self, dialog):
-        _translate = QtCore.QCoreApplication.translate
-        dialog.setWindowTitle(_translate("Dialog", "Новий розділ"))
-        self.label.setText(_translate("Dialog", "Введіть назву нового розділу"))
+    # def garbage(self):
+    # #     self.buttonBox = QtWidgets.QDialogButtonBox(self)
+    # #     self.buttonBox.setGeometry(QtCore.QRect(30, 110, 340, 90))
+    # #     self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+    # #     self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
+    # #     self.buttonBox.setObjectName("buttonBox")
+    # #     self.label = QtWidgets.QLabel(self)
+    # #     self.label.setGeometry(QtCore.QRect(50, 30, 290, 30))
+    # #     font = QtGui.QFont()
+    # #     font.setPointSize(12)
+    # #     font.setBold(False)
+    # #     self.label.setFont(font)
+    # #     self.label.setObjectName("label")
+    # #     self.short_name_div = QtWidgets.QLineEdit(self)
+    # #     self.short_name_div.setGeometry(QtCore.QRect(50, 80, 221, 21))
+    # #     self.short_name_div.setObjectName("short_name_div")
+    # #
+    # #     self.retranslateui(self)
+    # #     self.buttonBox.accepted.connect(self.accept_click)
+    # #     self.buttonBox.rejected.connect(self.close)
+    # #     QtCore.QMetaObject.connectSlotsByName(self)
+    # #
+    # # def retranslateui(self, dialog):
+    # #     _translate = QtCore.QCoreApplication.translate
+    # #     dialog.setWindowTitle(_translate("Dialog", "Новий розділ"))
+    # #     self.label.setText(_translate("Dialog", "Введіть назву нового розділу"))
+    #     pass
 
     @pyqtSlot()
     def accept_click(self):
-        pass
+        short_name = self.short_name_div.text()
+        full_name = self.full_name_div.text()
+        if short_name != '':
+            self.sql_req = "INSERT INTO system (div, div_full_name) VALUES ('" + short_name + "', '" + full_name + "')"
+            self.request.execute_data(self.sql_req)
+            QMessageBox.information(self, "Вітаю!", "Новий розділ успішно створенно!", QMessageBox.Ok, QMessageBox.Ok)
+            self.close()
+        else:
+            QMessageBox.critical(self, "Відсутнє ім'я нового розділу!",
+                                 "Введіть скорочену назву нового розділу!", QMessageBox.Ok, QMessageBox.Ok)

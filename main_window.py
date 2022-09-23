@@ -45,7 +45,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(594, 463, 151, 51))
-        self.pushButton.setObjectName("pushButton")
+        self.pushButton.setObjectName("closebutton")
         self.pushButton.clicked.connect(self.push_button_exit)
 
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -60,7 +60,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.pushButton_5.setMaximumSize(QtCore.QSize(16777215, 30))
         self.pushButton_5.setObjectName("pushButton_5_payments")
         self.verticalLayout.addWidget(self.pushButton_5)
-        self.pushButton_5.clicked.connect(self.button_current_costs)
+        self.pushButton_5.clicked.connect(self.button_current_payments)
 
         self.pushButton_2 = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.pushButton_2.setMaximumSize(QtCore.QSize(16777215, 30))
@@ -109,7 +109,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle(_translate("MainWindow", "Check your payments"))
         self.label.setText(_translate("MainWindow", "Ласкаво просимо до Вашого фінансового помічника !!!"))
         self.label_2.setText(_translate("MainWindow",
-                                        "Програма допоможе Вам вести ваші фінансові справи значно ефективніше ніж раніше. Ви зможете зрозуміліше контролювати Ваші витрати. Також Ви зможете прогнузувати Ваші витрати на майбутнє.\n"
+                                        "Програма допоможе Вам вести ваші фінансові справи значно ефективніше ніж "
+                                        "раніше. Ви зможете зрозуміліше контролювати Ваші витрати. Також Ви зможете "
+                                        "прогнузувати Ваші витрати на майбутнє.\n"
                                         " Насолоджуйтеся!\n"
                                         " І Гарного дня!"))
         self.pushButton.setText(_translate("MainWindow", "Вихід з програми"))
@@ -118,14 +120,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.pushButton_4.setText(_translate("MainWindow", "Ще щось"))
         self.label_3.setText(_translate("MainWindow", "   - перехід до Ваших фінансових справ"))
         self.label_5.setText(_translate("MainWindow", "   - статистика Ваших витрат"))
-        self.label_4.setText(_translate("MainWindow", "  - ще для чогось"))
+        self.label_4.setText(_translate("MainWindow", "  - різні не регулярні витрати"))
 
-    def button_current_costs(self):
+    def button_current_payments(self):
         self.dialog_CurrentCosts = CurrentCosts()
         self.dialog_CurrentCosts.show()
 
     def button_statistic(self):
-        # Request.show_other()
         self.dialog_StatSomeElse = StatSomeElse()
         self.dialog_StatSomeElse.show()
 

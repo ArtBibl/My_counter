@@ -17,6 +17,7 @@ from request_base import Request
 class SomeElse(QWidget):
     def __init__(self):
         super().__init__()
+        self.sql_req = None
         self.setObjectName("Dialog")
         self.resize(422, 240)
         self.request = Request()
@@ -53,7 +54,7 @@ class SomeElse(QWidget):
         self.gridLayout.addWidget(self.name_payments, 1, 0, 1, 1)
 
         self.retranslate_ui(self)
-        self.buttonBox.accepted.connect(self.on_click)
+        self.buttonBox.accepted.connect(self.push_payment)
         self.buttonBox.rejected.connect(self.close)
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -65,14 +66,16 @@ class SomeElse(QWidget):
         self.label_2.setText(_translate("Dialog", " Призначення витрат:"))
 
     @pyqtSlot()
-    def on_click(self):
+    def push_payment(self):
         textbox_value = self.name_payments.text()
         if textbox_value != '':
             try:
                 coast = float(self.coast.text())
                 text_message = textbox_value + ": " + str(coast) + "грн."
                 QMessageBox.information(self, 'Успішний запис витрат!', text_message, QMessageBox.Ok, QMessageBox.Ok)
-                self.request.add_other(textbox_value, coast)
+                self.sql_req = "INSERT INTO payments (name_pay, money, date) VALUES ('" + textbox_value + "', " + str(
+                    coast) + ", datetime('now', 'localtime'))"
+                self.request.execute_data(self.sql_req)
                 self.name_payments.setText("")
             except ValueError:
                 QMessageBox.critical(self, 'Некоректна сума!',
