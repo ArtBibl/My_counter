@@ -17,8 +17,9 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__()
         self.setObjectName("MainWindow")
         self.setEnabled(True)
-        self.resize(800, 600)
-        self.setToolTipDuration(0)
+        # self.resize(800, 600)
+        self.setFixedSize(800, 600)
+        # self.setToolTipDuration(0)
 
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")

@@ -20,11 +20,11 @@ class NewDivision(QWidget):
         super().__init__()
         self.setObjectName("new_div")
         self.setWindowTitle("Новий розділ")
-        self.resize(400, 260)
+        self.setFixedSize(400, 260)
         self.request = Request()
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
-        self.buttonBox.setGeometry(QtCore.QRect(30, 170, 340, 90))
+        self.buttonBox.setGeometry(QtCore.QRect(30, 180, 340, 90))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")

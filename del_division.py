@@ -20,11 +20,11 @@ class DelDivision(QWidget):
         super().__init__()
         self.setObjectName("del_division")
         self.setWindowTitle("Видалення розділу витрат")
-        self.resize(400, 240)
+        self.setFixedSize(400, 240)
         self.request = Request()
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
-        self.buttonBox.setGeometry(QtCore.QRect(30, 180, 340, 20))
+        self.buttonBox.setGeometry(QtCore.QRect(30, 180, 340, 30))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")

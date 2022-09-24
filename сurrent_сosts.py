@@ -23,7 +23,8 @@ class CurrentCosts(QtWidgets.QMainWindow):
         self.tab = None
         self.setObjectName("CurrentCosts")
         self.setWindowTitle("Щомісячні витрати")
-        self.resize(850, 530)
+        # self.resize(850, 530)
+        self.setFixedSize(850, 530)
 
         self.sql_req = "SELECT * FROM system"
         self.request = Request()
@@ -33,9 +34,9 @@ class CurrentCosts(QtWidgets.QMainWindow):
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(650, 340, 180, 170))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
 
+        self.tab_widgets()
         self.layout_main_button()
-        self.tab_widget()
-        self.group_box()
+        self.right_top_layout()
 
     def layout_main_button(self):
         """main buttons"""
@@ -54,7 +55,6 @@ class CurrentCosts(QtWidgets.QMainWindow):
         self.verticalLayout.addWidget(self.del_div_button)
         self.del_div_button.setText("Видалити розділ")
         self.del_div_button.clicked.connect(self.del_division)
-
         """close window"""
         self.closebutton = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.closebutton.setObjectName("closebutton")
@@ -68,140 +68,178 @@ class CurrentCosts(QtWidgets.QMainWindow):
         self.close_program_button.setText("Вихід з програми")
         self.close_program_button.clicked.connect(main_window.MainWindow.push_button_exit)
 
-    def tab_widget(self):
+    def tab_widgets(self):
         """Tab widget - division"""
         self.tabWidget = QtWidgets.QTabWidget(self)
         self.tabWidget.setGeometry(QtCore.QRect(20, 0, 610, 500))
         self.tabWidget.setObjectName("tabWidget")
-
-        self.tab = QtWidgets.QWidget()
-        self.tab.setObjectName("tab")
-
-        self.pushButton_5 = QtWidgets.QPushButton(self.tab)
-        self.pushButton_5.setGeometry(QtCore.QRect(370, 410, 100, 30))
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.pushButton_5.setText("Оновити")
-
-        self.pushButton_4 = QtWidgets.QPushButton(self.tab)
-        self.pushButton_4.setGeometry(QtCore.QRect(479, 410, 100, 30))
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.pushButton_4.setText("Внести зміни")
-
-        self.dateEdit = QtWidgets.QDateEdit(self.tab)  # calendar
-        self.dateEdit.setGeometry(QtCore.QRect(50, 410, 90, 30))
-        self.dateEdit.setObjectName("dateEdit")
-
-    def group_box(self):
-        self.groupBox_2 = QtWidgets.QGroupBox(self.tab)
-        self.groupBox_2.setGeometry(QtCore.QRect(40, 30, 540, 360))
-        self.groupBox_2.setObjectName("groupBox_2")
-        self.groupBox_2.setTitle("Розрахунок поточних платежів:")
-
-        self.gridLayoutWidget = QtWidgets.QWidget(self.groupBox_2)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 50, 520, 300))
-        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
-
-        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout.setObjectName("gridLayout")
-
-        self.checkBox = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox.setObjectName("checkBox")
-        self.gridLayout.addWidget(self.checkBox, 0, 0, 1, 1)
-        self.checkBox.setText("Вода та стоки")
-
-        self.lineEdit_price = QtWidgets.QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_price.setObjectName("lineEdit_price")
-        self.gridLayout.addWidget(self.lineEdit_price, 0, 1, 1, 1)
-
-        self.lineEdit_7 = QtWidgets.QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_7.setObjectName("lineEdit_7")
-        self.gridLayout.addWidget(self.lineEdit_7, 0, 2, 1, 1)  # temporary label
-
-        self.lineEdit_8 = QtWidgets.QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_8.setObjectName("lineEdit_8")
-        self.lineEdit_7.setPlaceholderText("Кількість")
-        self.gridLayout.addWidget(self.lineEdit_8, 0, 3, 1, 1)
-
-        self.lineEdit_15 = QtWidgets.QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_15.setObjectName("lineEdit_15")
-        self.gridLayout.addWidget(self.lineEdit_15, 0, 4, 1, 1)
-
-        index_finish = 10
-        index_start = 0
-        while index_start != index_finish:
-
-            self.label_9 = QtWidgets.QLabel(self.gridLayoutWidget)
-            self.label_9.setAlignment(QtCore.Qt.AlignCenter)
-            self.label_9.setObjectName("label_9")
-            self.label_9.setText("Сплаченно")
-            self.gridLayout.addWidget(self.label_9, index_start, 5, 1, 1)
-
-            self.label_100 = QtWidgets.QLabel(self.gridLayoutWidget)
-            self.label_100.setAlignment(QtCore.Qt.AlignCenter)
-            self.label_100.setObjectName("label_100")
-            self.label_100.setText(" ")
-            self.gridLayout.addWidget(self.label_100, index_start + 1, 5, 1, 1)
-            index_start += 2
-
-        self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(self.spacerItem, 100, 1, 1, 1)
-        """  -------------   """
-
-        """   -------------   """
-        """   Line into tab   """
-        self.line_2 = QtWidgets.QFrame(self.groupBox_2)
-        self.line_2.setGeometry(QtCore.QRect(10, 40, 520, 15))
-        self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line_2.setObjectName("line_2")
-
-        self.label_12 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_12.setGeometry(QtCore.QRect(110, 20, 100, 20))
-        self.label_12.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_12.setObjectName("label_12")
-        self.label_12.setText("Ціна, грн")
-
-        self.label_14 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_14.setGeometry(QtCore.QRect(210, 20, 80, 20))
-        self.label_14.setAutoFillBackground(False)
-        self.label_14.setScaledContents(False)
-        self.label_14.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_14.setObjectName("label_14")
-        self.label_14.setText("Показники ліч")
-
-        self.label_16 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_16.setGeometry(QtCore.QRect(300, 20, 80, 20))
-        self.label_16.setAutoFillBackground(False)
-        self.label_16.setScaledContents(False)
-        self.label_16.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_16.setObjectName("label_16")
-        self.label_16.setText("Показники ліч")
-
-        self.label_17 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_17.setGeometry(QtCore.QRect(390, 20, 80, 20))
-        self.label_17.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_17.setObjectName("label_17")
-        self.label_17.setText("До сплати, грн")
-
-        self.tabWidget.addTab(self.tab, "")
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), ("122"))
 
         for id_div in self.data:
             print(id_div[0])
             self.tab = QtWidgets.QWidget()
             self.tab.setObjectName(f"{id_div[0]}")
 
+            self.refresh_but = QtWidgets.QPushButton(self.tab)
+            self.refresh_but.setGeometry(QtCore.QRect(370, 410, 100, 30))
+            self.refresh_but.setObjectName("refresh_but")
+            self.refresh_but.setText("Оновити")
 
-            self.pushButton = QtWidgets.QPushButton(self.tab)
-            self.pushButton.setGeometry(QtCore.QRect(370, 410, 100, 30))
-            self.pushButton.setObjectName(f"{id_div[2]}")
-            self.pushButton.setText(f"{id_div[2]}")
+            self.insert_but = QtWidgets.QPushButton(self.tab)
+            self.insert_but.setGeometry(QtCore.QRect(479, 410, 100, 30))
+            self.insert_but.setObjectName("insert_but")
+            self.insert_but.setText("Внести зміни")
+
+            self.dateEdit = QtWidgets.QDateEdit(self.tab)  # calendar
+            self.dateEdit.setGeometry(QtCore.QRect(50, 410, 90, 30))
+            self.dateEdit.setObjectName("dateEdit")
+
+            self.groupBox = QtWidgets.QGroupBox(self.tab)
+            self.groupBox.setGeometry(QtCore.QRect(40, 30, 540, 360))
+            self.groupBox.setObjectName("groupBox")
+            self.groupBox.setTitle("Розрахунок поточних платежів:")
+
+            self.gridLayout_tab = QtWidgets.QWidget(self.groupBox)
+            self.gridLayout_tab.setGeometry(QtCore.QRect(10, 30, 520, 300))  # size layout
+            self.gridLayout_tab.setObjectName("gridLayout_tab")
+
+            self.gridLayout = QtWidgets.QGridLayout(self.gridLayout_tab)
+            self.gridLayout.setContentsMargins(0, 0, 0, 0)
+            self.gridLayout.setObjectName("gridLayout")
+
+            """ base labels into tabs"""
+            self.label_name = QtWidgets.QLabel(self.gridLayout_tab)
+            self.label_name.setAlignment(QtCore.Qt.AlignCenter)
+            self.label_name.setObjectName("name")
+            self.label_name.setText("Постачальник:")
+            self.gridLayout.addWidget(self.label_name, 0, 0, 1, 1)
+
+            self.label_price = QtWidgets.QLabel(self.gridLayout_tab)
+            self.label_price.setAlignment(QtCore.Qt.AlignCenter)
+            self.label_price.setObjectName("price")
+            self.label_price.setText("Ціна, грн:")
+            self.gridLayout.addWidget(self.label_price, 0, 1, 1, 1)
+
+            self.label_counter = QtWidgets.QLabel(self.gridLayout_tab)
+            self.label_counter.setAlignment(QtCore.Qt.AlignCenter)
+            self.label_counter.setObjectName("counter")
+            self.label_counter.setText("Лічільник")
+            self.gridLayout.addWidget(self.label_counter, 0, 2, 1, 1)
+
+            self.label_new_count = QtWidgets.QLabel(self.gridLayout_tab)
+            self.label_new_count.setAlignment(QtCore.Qt.AlignCenter)
+            self.label_new_count.setObjectName("new_count")
+            self.label_new_count.setText("Нові показники:")
+            self.gridLayout.addWidget(self.label_new_count, 0, 3, 1, 1)
+
+            self.label_money = QtWidgets.QLabel(self.gridLayout_tab)
+            self.label_money.setAlignment(QtCore.Qt.AlignCenter)
+            self.label_money.setObjectName("money")
+            self.label_money.setText("Сума сплати:")
+            self.gridLayout.addWidget(self.label_money, 0, 4, 1, 1)
+
+            self.label_status = QtWidgets.QLabel(self.gridLayout_tab)
+            self.label_status.setAlignment(QtCore.Qt.AlignCenter)
+            self.label_status.setObjectName("counter")
+            self.label_status.setText("Статус:")
+            self.gridLayout.addWidget(self.label_status, 0, 5, 1, 1)
+            """ empty string """
+            for i in range(6):
+                self.label_empty = QtWidgets.QLabel(self.gridLayout_tab)
+                self.label_empty.setAlignment(QtCore.Qt.AlignCenter)
+                self.label_empty.setObjectName("label_empty")
+                self.label_empty.setText("-------------------")
+                self.gridLayout.addWidget(self.label_empty, 1, i, 1, 1)
+
+            """ widget lines """
+            self.checkBox = QtWidgets.QCheckBox(self.gridLayout_tab)
+            self.checkBox.setObjectName("checkBox")
+            self.gridLayout.addWidget(self.checkBox, 2, 0, 1, 1)
+            self.checkBox.setText("Вода та стоки")
+
+            self.lineEdit_price = QtWidgets.QLineEdit(self.gridLayout_tab)
+            self.lineEdit_price.setObjectName("lineEdit_price")
+            self.gridLayout.addWidget(self.lineEdit_price, 2, 1, 1, 1)
+
+            self.lineEdit_7 = QtWidgets.QLineEdit(self.gridLayout_tab)
+            self.lineEdit_7.setObjectName("lineEdit_7")
+            self.gridLayout.addWidget(self.lineEdit_7, 2, 2, 1, 1)  # temporary label
+
+            self.lineEdit_8 = QtWidgets.QLineEdit(self.gridLayout_tab)
+            self.lineEdit_8.setObjectName("lineEdit_8")
+            self.lineEdit_7.setPlaceholderText("Кількість")
+            self.gridLayout.addWidget(self.lineEdit_8, 2, 3, 1, 1)
+
+            self.lineEdit_15 = QtWidgets.QLineEdit(self.gridLayout_tab)
+            self.lineEdit_15.setObjectName("lineEdit_15")
+            self.gridLayout.addWidget(self.lineEdit_15, 2, 4, 1, 1)
+
+            index_finish = 10
+            index_start = 2
+            while index_start != index_finish:
+                self.label_check = QtWidgets.QLabel(self.gridLayout_tab)
+                self.label_check.setAlignment(QtCore.Qt.AlignCenter)
+                self.label_check.setObjectName("label_check")
+                self.label_check.setText("Сплаченно")
+                self.gridLayout.addWidget(self.label_check, index_start, 5, 1, 1)
+
+                self.label_empty = QtWidgets.QLabel(self.gridLayout_tab)
+                self.label_empty.setAlignment(QtCore.Qt.AlignCenter)
+                self.label_empty.setObjectName("label_empty")
+                self.label_empty.setText(" ")
+                self.gridLayout.addWidget(self.label_empty, index_start + 1, 6, 1, 1)
+                index_start += 2
+
+            self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                                    QtWidgets.QSizePolicy.Expanding)
+            self.gridLayout.addItem(self.spacerItem, 100, 1, 1, 1)
+            """  -------------   """
+
+            """   -------------   """
+            """   Line into tab   """
+            # self.line_2 = QtWidgets.QFrame(self.groupBox)
+            # self.line_2.setGeometry(QtCore.QRect(10, 40, 520, 15))
+            # self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
+            # self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
+            # self.line_2.setObjectName("line_2")
+
+            # self.label_12 = QtWidgets.QLabel(self.groupBox)
+            # self.label_12.setGeometry(QtCore.QRect(110, 20, 100, 20))
+            # self.label_12.setAlignment(QtCore.Qt.AlignCenter)
+            # self.label_12.setObjectName("label_12")
+            # self.label_12.setText("Ціна, грн")
+            #
+            # self.label_14 = QtWidgets.QLabel(self.groupBox)
+            # self.label_14.setGeometry(QtCore.QRect(210, 20, 80, 20))
+            # self.label_14.setAutoFillBackground(False)
+            # self.label_14.setScaledContents(False)
+            # self.label_14.setAlignment(QtCore.Qt.AlignCenter)
+            # self.label_14.setObjectName("label_14")
+            # self.label_14.setText("Показники ліч")
+            #
+            # self.label_16 = QtWidgets.QLabel(self.groupBox)
+            # self.label_16.setGeometry(QtCore.QRect(300, 20, 80, 20))
+            # self.label_16.setAutoFillBackground(False)
+            # self.label_16.setScaledContents(False)
+            # self.label_16.setAlignment(QtCore.Qt.AlignCenter)
+            # self.label_16.setObjectName("label_16")
+            # self.label_16.setText("Показники ліч")
+            #
+            # self.label_17 = QtWidgets.QLabel(self.groupBox)
+            # self.label_17.setGeometry(QtCore.QRect(390, 20, 80, 20))
+            # self.label_17.setAlignment(QtCore.Qt.AlignCenter)
+            # self.label_17.setObjectName("label_17")
+            # self.label_17.setText("До сплати, грн")
+
+            # """ dynamic button """
+            # self.pushButton = QtWidgets.QPushButton(self.tab)
+            # self.pushButton.setGeometry(QtCore.QRect(370, 410, 100, 30))
+            # self.pushButton.setObjectName(f"{id_div[2]}")
+            # self.pushButton.setText(f"{id_div[2]}")
 
             self.tabWidget.addTab(self.tab, "")
             self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), f"{id_div[1]}")
 
-
+    def right_top_layout(self):
         self.label = QtWidgets.QLabel(self)
         self.label.setGeometry(QtCore.QRect(660, 40, 160, 40))
         self.label.setObjectName("label")
@@ -218,7 +256,7 @@ class CurrentCosts(QtWidgets.QMainWindow):
         self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
-        """  Line   """
+        """  Bottom line   """
         self.line_4 = QtWidgets.QFrame(self)
         self.line_4.setGeometry(QtCore.QRect(20, 500, 810, 20))
         self.line_4.setFrameShape(QtWidgets.QFrame.HLine)
@@ -235,13 +273,16 @@ class CurrentCosts(QtWidgets.QMainWindow):
 
         self.label_2 = QtWidgets.QLabel(self.verticalLayoutWidget_2)
         self.label_2.setObjectName("label_2")
+        self.label_2.setText("Вода")
         self.verticalLayout_2.addWidget(self.label_2)
 
         self.label_4 = QtWidgets.QLabel(self.verticalLayoutWidget_2)
         self.label_4.setObjectName("label_4")
+        self.label_4.setText("Інтернет")
         self.verticalLayout_2.addWidget(self.label_4)
 
         self.label_3 = QtWidgets.QLabel(self.verticalLayoutWidget_2)
+        self.label_3.setText("Охорона")
         self.label_3.setObjectName("label_3")
         self.verticalLayout_2.addWidget(self.label_3)
 
@@ -249,55 +290,27 @@ class CurrentCosts(QtWidgets.QMainWindow):
         self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(650, 240, 180, 80))
         self.verticalLayoutWidget_3.setObjectName("verticalLayoutWidget_3")
 
+        self.label.setText("Обов\'язкові поточні платежи")
+
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
 
         self.label_5 = QtWidgets.QLabel(self.verticalLayoutWidget_3)
         self.label_5.setObjectName("label_5")
+        self.label_5.setText("TextLabel")
         self.verticalLayout_3.addWidget(self.label_5)
 
         self.label_6 = QtWidgets.QLabel(self.verticalLayoutWidget_3)
         self.label_6.setObjectName("label_6")
+        self.label_6.setText("Орієнтовна сума до сплати: 2000грн")
         self.verticalLayout_3.addWidget(self.label_6)
-
+        """ right-middle line """
         self.line_5 = QtWidgets.QFrame(self)
         self.line_5.setGeometry(QtCore.QRect(650, 220, 180, 20))
         self.line_5.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_5.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_5.setObjectName("line_5")
-
-        self.retranslateUi(self)
-        # self.tabWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(self)
-
-    def retranslateUi(self, CurrentCosts):
-        _translate = QtCore.QCoreApplication.translate
-        # self.checkBox_8.setText(_translate("CurrentCosts", "Vodafon"))
-        # self.checkBox_6.setText(_translate("CurrentCosts", "Розподіл газу"))
-        #
-        # self.checkBox_4.setText(_translate("CurrentCosts", "Електроенергія"))
-        # self.checkBox_3.setText(_translate("CurrentCosts", "Вода"))
-        # self.label_19.setText(_translate("CurrentCosts", "TextLabel"))
-        # self.label_18.setText(_translate("CurrentCosts", "TextLabel"))
-        # self.checkBox_2.setText(_translate("CurrentCosts", "Охорона"))
-        # self.checkBox_5.setText(_translate("CurrentCosts", "Газ"))
-        #
-        # self.label_10.setText(_translate("CurrentCosts", "Відсутній"))
-        # self.label_13.setText(_translate("CurrentCosts", "TextLabel"))
-        # self.checkBox_7.setText(_translate("CurrentCosts", "Інтернет"))
-        # self.label_11.setText(_translate("CurrentCosts", "TextLabel"))
-        # self.label_15.setText(_translate("CurrentCosts", "TextLabel"))
-        # self.label_20.setText(_translate("CurrentCosts", "TextLabel"))
-        # self.label_8.setText(_translate("CurrentCosts", "Постачальник"))
-
-
-        self.label.setText(_translate("CurrentCosts", "Обов\'язкові поточні платежи"))
-        self.label_2.setText(_translate("CurrentCosts", "Вода"))
-        self.label_4.setText(_translate("CurrentCosts", "Інтернет"))
-        self.label_3.setText(_translate("CurrentCosts", "Охорона"))
-        self.label_5.setText(_translate("CurrentCosts", "TextLabel"))
-        self.label_6.setText(_translate("CurrentCosts", "Орієнтовна сума до сплати: 2000грн"))
 
     def new_division(self):
         self.dialog_NewDivision = NewDivision()
@@ -306,4 +319,3 @@ class CurrentCosts(QtWidgets.QMainWindow):
     def del_division(self):
         self.dialog_DelDivision = DelDivision()
         self.dialog_DelDivision.show()
-
