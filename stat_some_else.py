@@ -8,9 +8,9 @@ class StatSomeElse(QWidget):
     def __init__(self):
         super().__init__()
         self.setObjectName("Stat_some_else")
-        # self.resize(365, 400)
+        self.resize(500, 600)
         self.setWindowTitle("Статистика різних витрат")
-        self.setGeometry(500, 400, 500, 300)
+        # self.setGeometry(500, 400, 500, 300)
         self.setFixedWidth(500)  # fixed size of window
         self.sql_req = "SELECT name_pay, money, date FROM payments"
         self.request = Request()

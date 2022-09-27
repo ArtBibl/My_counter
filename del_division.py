@@ -47,10 +47,10 @@ class DelDivision(QWidget):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
 
-        self.label_2 = QtWidgets.QLabel(self.verticalLayoutWidget)
-        self.label_2.setObjectName("label_2")
-        self.label_2.setText("Скорочена назва непотрібного розхділу")
-        self.verticalLayout.addWidget(self.label_2)
+        # self.label_2 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        # self.label_2.setObjectName("label_2")
+        # self.label_2.setText("Скорочена назва непотрібного розхділу")
+        # self.verticalLayout.addWidget(self.label_2)
 
         self.short_name_div = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.short_name_div.setObjectName("lineEdit")

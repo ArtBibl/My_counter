@@ -47,20 +47,20 @@ class NewDivision(QWidget):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
 
-        self.label_2 = QtWidgets.QLabel(self.verticalLayoutWidget)
-        self.label_2.setObjectName("label_2")
-        self.label_2.setText("Скорочена назва нового розхділу")
-        self.verticalLayout.addWidget(self.label_2)
+        # self.label_2 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        # self.label_2.setObjectName("label_2")
+        # self.label_2.setText("Скорочена назва нового розхділу")
+        # self.verticalLayout.addWidget(self.label_2)
 
         self.short_name_div = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.short_name_div.setObjectName("short_name_div")
         self.short_name_div.setPlaceholderText("Им\'я нового розділу")
         self.verticalLayout.addWidget(self.short_name_div)
 
-        self.label_3 = QtWidgets.QLabel(self.verticalLayoutWidget)
-        self.label_3.setObjectName("label_3")
-        self.label_3.setText("Розширена назва розділу")
-        self.verticalLayout.addWidget(self.label_3)
+        # self.label_3 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        # self.label_3.setObjectName("label_3")
+        # self.label_3.setText("Розширена назва розділу")
+        # self.verticalLayout.addWidget(self.label_3)
 
         self.full_name_div = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.full_name_div.setObjectName("full_name_div")
