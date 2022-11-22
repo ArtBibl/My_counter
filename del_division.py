@@ -16,12 +16,12 @@ from request_base import Request
 
 
 class DelDivision(QWidget):
-    def __init__(self):
+    def __init__(self, current_pay_window=None):
         super().__init__()
+        self.current_pay_window = current_pay_window
         self.setObjectName("del_division")
         self.setWindowTitle("Видалення розділу витрат")
         self.setFixedSize(400, 240)
-        self.request = Request()
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
         self.buttonBox.setGeometry(QtCore.QRect(30, 180, 340, 30))
@@ -47,11 +47,6 @@ class DelDivision(QWidget):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
 
-        # self.label_2 = QtWidgets.QLabel(self.verticalLayoutWidget)
-        # self.label_2.setObjectName("label_2")
-        # self.label_2.setText("Скорочена назва непотрібного розхділу")
-        # self.verticalLayout.addWidget(self.label_2)
-
         self.short_name_div = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.short_name_div.setObjectName("lineEdit")
         self.short_name_div.setPlaceholderText("Скороченне ім\'я розділу")
@@ -63,14 +58,24 @@ class DelDivision(QWidget):
     @pyqtSlot()
     def accept_click(self):
         short_name = self.short_name_div.text()
-        if short_name != '':
-            self.sql_req = "DELETE FROM system WHERE div = '" + short_name + "';"
-            self.request.execute_data(self.sql_req)
+
+        request = Request()
+        sql_req = "SELECT div FROM system"
+        data = request.show_base(sql_req)
+
+        if short_name not in str(data):
+            QMessageBox.critical(self, "Такий розділ не існує!",
+                                 "Введіть назву розділу!", QMessageBox.Ok, QMessageBox.Ok)
+            self.short_name_div.setText('')
+        elif short_name != '':
+            sql_req = "DELETE FROM system WHERE div = '" + short_name + "';"
+            request = Request()
+            request.execute_data(sql_req)
             QMessageBox.information(self, "Вітаю!", "Розділ було успішно видаленно!", QMessageBox.Ok, QMessageBox.Ok)
+            self.short_name_div.setText('')
             self.close()
+            if self.current_pay_window is not None:
+                self.current_pay_window.tab_widgets()
         else:
             QMessageBox.critical(self, "Відсутнє скороченне ім'я розділу!",
                                  "Введіть скорочену назву розділу для видалення!", QMessageBox.Ok, QMessageBox.Ok)
-
-
-
