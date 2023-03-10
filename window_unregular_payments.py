@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtCore import pyqtSlot, Qt, QDate, QTime
 from PyQt5.QtWidgets import QLineEdit, QMessageBox, QWidget
 from request_base import Request
 
@@ -20,7 +20,7 @@ class UnregularPayments(QWidget):
         self.stat_window = stat_window
         self.setObjectName("Unreg_payments")
         self.setWindowTitle("Витрати")
-        self.setFixedSize(420, 240)
+        self.setFixedSize(420, 260)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
         self.buttonBox.setGeometry(QtCore.QRect(30, 180, 340, 30))
@@ -37,7 +37,7 @@ class UnregularPayments(QWidget):
         self.label.setText("Ваші нерегулярні витрати:")
 
         self.gridLayoutWidget = QtWidgets.QWidget(self)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(40, 60, 330, 40))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(40, 60, 330, 100))
         self.gridLayoutWidget.setObjectName("gridLayout_tab")
 
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
@@ -56,13 +56,30 @@ class UnregularPayments(QWidget):
 
         self.coast = QLineEdit(self)
         self.coast.setObjectName("coast")
+        self.coast.setFixedHeight(20)
         self.coast.setPlaceholderText("Сума витрат, грн..")
         self.gridLayout.addWidget(self.coast, 1, 1, 1, 1)
 
         self.name_payments = QLineEdit(self)
         self.name_payments.setObjectName("name_profit")
+        self.name_payments.setFixedHeight(20)
         self.name_payments.setPlaceholderText("Назва витрат")
         self.gridLayout.addWidget(self.name_payments, 1, 0, 1, 1)
+
+        self.label_calendar = QtWidgets.QLabel(self.gridLayoutWidget)
+        self.label_calendar.setObjectName("label_3")
+        self.label_calendar.setText(" Дата платежу:")
+        self.gridLayout.addWidget(self.label_calendar, 2, 0, 1, 1)
+
+        self.dateEdit = QtWidgets.QDateTimeEdit(self, calendarPopup=True)  # calendar
+        # self.dateEdit.setGeometry(QtCore.QRect(50, 410, 90, 30))
+        self.dateEdit.setFixedHeight(20)
+        self.dateEdit.setObjectName("calendar_dateEdit")
+        self.dateEdit.setDate(QDate.currentDate())
+        self.dateEdit.setTime(QTime.currentTime())
+        self.dateEdit.setDisplayFormat('dd-MM-yyyy | hh:mm:ss')
+        # print(self.calendar_edit.text().replace('.', '-'))
+        self.gridLayout.addWidget(self.dateEdit, 3, 0, 1, 1)
 
         self.buttonBox.accepted.connect(self.push_payment)
         self.buttonBox.rejected.connect(self.close)
@@ -70,15 +87,19 @@ class UnregularPayments(QWidget):
     @pyqtSlot()
     def push_payment(self):
         textbox_value = self.name_payments.text()
+        date = self.dateEdit.dateTime().toString("yyyy-MM-dd HH:mm:ss")
         if textbox_value != '':
             try:
                 coast = float(self.coast.text())
                 coast = abs(coast)
-                text_message = textbox_value + ": " + str(coast) + "грн."
+                text_message = f"\n{textbox_value}: {coast} грн. \n" \
+                               f"Дата: {date} \n"
                 QMessageBox.information(self, 'Успішний запис витрат!', text_message, QMessageBox.Ok, QMessageBox.Ok)
                 request = Request()
                 sql_req = "INSERT INTO payments (name_pay, money, date) VALUES ('" + textbox_value + "', -" + str(
-                    coast) + ", datetime('now', 'localtime'))"
+                    coast) + ", '" + date + "')"
+                # sql_req = "INSERT INTO payments (name_pay, money, date) VALUES ('" + textbox_value + "', -" + str(
+                #     coast) + ", datetime('now', 'localtime'))"
                 request.execute_data(sql_req)
                 self.name_payments.setText("")
                 if self.stat_window is not None:

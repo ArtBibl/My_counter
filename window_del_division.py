@@ -17,9 +17,9 @@ from const import *
 
 
 class DelDivision(QWidget):
-    def __init__(self, current_pay_window=None):
+    def __init__(self, regular_pay_window=None):
         super().__init__()
-        self.current_pay_window = current_pay_window
+        self.regular_pay_window = regular_pay_window
         self.setObjectName("del_division")
         self.setWindowTitle("Видалення розділу витрат")
         self.setFixedSize(SET_FIX_SIZE_X, SET_FIX_SIZE_Y)
@@ -75,8 +75,8 @@ class DelDivision(QWidget):
             QMessageBox.information(self, "Вітаю!", "Розділ було успішно видаленно!", QMessageBox.Ok, QMessageBox.Ok)
             self.short_name_div.setText('')
             self.close()
-            if self.current_pay_window is not None:
-                self.current_pay_window.tab_widgets()
+            if self.regular_pay_window is not None:
+                self.regular_pay_window.tab_widgets()
         else:
             QMessageBox.critical(self, "Відсутнє скороченне ім'я розділу!",
                                  "Введіть скорочену назву розділу для видалення!", QMessageBox.Ok, QMessageBox.Ok)

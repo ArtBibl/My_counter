@@ -1,10 +1,10 @@
 import sqlite3
-from const import *
+import const
 
 
 class Request(object):
     def __init__(self):
-        self.con = sqlite3.connect(DATA_BASE)  # Can I use "with"?
+        self.con = sqlite3.connect(const.DATA_BASE)  # Can I use "with"?
         self.cur = self.con.cursor()
 
     def close_db(self):
@@ -16,8 +16,6 @@ class Request(object):
             self.cur.execute(request)
             rows = self.cur.fetchall()
             self.close_db()
-            if not rows:
-                rows = [(None, None, None)]
             return rows
         except sqlite3.OperationalError:
             self.__create_table_db()
@@ -29,26 +27,23 @@ class Request(object):
 
     def __create_table_db(self):
         self.con.executescript(
-            "CREATE TABLE system("
+            "CREATE TABLE IF NOT EXISTS system("
             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
             "div VARCHAR (15), "
-            "div_full_name VARCHAR (40));"
+            "div_full_name VARCHAR (40), "
+            "name_customer VARCHAR (15), "
+            "first_price DECIMAL(10, 2), "
+            "first_counter DECIMAL(10, 3));"
             
-            "CREATE TABLE payments("
+            "CREATE TABLE IF NOT EXISTS payments("
             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
             "date DATE, "
             "name_pay VARCHAR (30), "
-            "counter_any DECIMAL(7, 2), "
-            "price_any DECIMAL (5, 2), "
-            "money DECIMAL (7, 2), "
+            "counter DECIMAL(10, 3), "
+            "price DECIMAL (10, 2), "
+            "money DECIMAL (10, 2), "
             "any_text VARCHAR (30), "
-            "div_pay VARCHAR (10));"
-
-            "CREATE TABLE sys_widgets("
-            "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-            "name_div VARCHAR(15), "
-            "name_customer VARCHAR(15), "
-            "counter_old DECIMAL(10, 2);"
+            "div_pay VARCHAR (10)); "
         )
         self.con.commit()
         self.close_db()

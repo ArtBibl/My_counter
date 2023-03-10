@@ -10,43 +10,50 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5.QtWidgets import QWidget, QMessageBox, QCheckBox
+from PyQt5.QtWidgets import QMessageBox, QCheckBox, QDialog, QDialogButtonBox
 
 from request_base import Request
 
 
-class WindowNewCustomer(QWidget):
-    def __init__(self, RegularPaymentWindow=None, div=None):
-        super().__init__()
-        self.div = div
-        self.RegularPaymentWindow = RegularPaymentWindow
+class WindowNewCustomer(QDialog):
+    def __init__(self, parent=None, tab_widget=None):
+        super().__init__(parent)
+        self.div = tab_widget
         self.setObjectName("new_customer")
         self.setWindowTitle("Новий постачальник послуг")
-        self.setFixedSize(400, 260)
+        self.setFixedSize(400, 290)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
-        self.buttonBox.setGeometry(QtCore.QRect(30, 180, 340, 90))
+        self.buttonBox.setGeometry(QtCore.QRect(30, 180, 340, 150))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.addButton("Додати", QDialogButtonBox.AcceptRole)
+        self.buttonBox.addButton("Відміна", QDialogButtonBox.RejectRole)
         self.buttonBox.setObjectName("buttonBox")
 
         self.label = QtWidgets.QLabel(self)
-        self.label.setGeometry(QtCore.QRect(50, 30, 290, 30))
+        self.label.setGeometry(QtCore.QRect(50, 30, 290, 50))
         font = QtGui.QFont()
         font.setPointSize(12)
-        font.setBold(False)
+        font.setBold(True)
         font.setWeight(50)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.label.setText("Введіть назву нових посуг")
+        self.label.setText(f"Введіть назву нових посуг \nдо розділу: '{self.div}'")
 
         self.verticalLayoutWidget = QtWidgets.QWidget(self)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(50, 70, 260, 100))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(50, 100, 260, 110))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
 
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
+
+        # self.div_for_new_customer = QtWidgets.QLineEdit(self.verticalLayoutWidget)
+        # self.div_for_new_customer.setObjectName("div_for_new_customer")
+        # self.div_for_new_customer.setPlaceholderText("Им\'я розділу для додавання постачальника")
+        # self.div_for_new_customer.setMaxLength(15)
+        # self.div_for_new_customer.setFixedWidth(150)
+        # self.verticalLayout.addWidget(self.div_for_new_customer)
 
         self.new_customer = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.new_customer.setObjectName("new_customer")
@@ -86,40 +93,44 @@ class WindowNewCustomer(QWidget):
 
     @pyqtSlot()
     def __accept_click(self):
+        __div = self.div
         __new_customer = self.new_customer.text()
         __base_price = self.base_price.text()
         __counter = self.qline_start_counter.text()
 
-        # request = Request()
-        # sql_req = "SELECT div FROM system"
-        # data = request.show_base(sql_req)
+        request = Request()
+        req_select_div = "SELECT div, name_customer FROM system"
+        data = request.show_base(req_select_div)
+        print(data)
 
-        print(self.div)
-        print("Under development")
-        QMessageBox.critical(self, "Under development!",
-                                 "Sorry! :(\nUnder development!", QMessageBox.Ok, QMessageBox.Ok)
+        if (__div, __new_customer) in data:
+            QMessageBox.critical(self, "Увага!",
+                                 f"Постачальник {__new_customer} вже існує!\n"
+                                 f"Введіть унікальне ім'я постачальника послуг!\n"
+                                 , QMessageBox.Ok, QMessageBox.Ok)
+            self.new_customer.setText('')
+        elif __new_customer == '':
+            QMessageBox.critical(self, "Увага!",
+                                 "Відсутнє ім'я постачальника!\n"
+                                 "Введіть ім'я постачальника послуг!",
+                                 QMessageBox.Ok, QMessageBox.Ok)
+        elif __base_price == '':
+            QMessageBox.critical(self, "Увага!",
+                                 "Відсутнє базова ціна послуг,\n"
+                                 "або некоректна базова ціна послуг!\n\n"
+                                 "Введіть ціну послуг за одиницю!\n",
+                                 QMessageBox.Ok, QMessageBox.Ok)
 
-        if self.RegularPaymentWindow is not None:
-            self.RegularPaymentWindow.refresh()
-
-        # if __new_customer in str(data):
-        #     QMessageBox.critical(self, "Таке ім'я нового розділу вже існує!",
-        #                          "Введіть унікальну назву нового розділу!",
-        #                          QMessageBox.Ok, QMessageBox.Ok)
-        #     self.short_name_div.setText('')
-        # elif short_name != '':
-        #     if self.counter_checkbox.isChecked():
-        #         sql_req = "INSERT INTO system (div, div_full_name) VALUES ('" + short_name + "', '" + full_name + "')"
-        #     if self.counter_checkbox.isChecked() is not True:
-        #         sql_req = "INSERT INTO system (div, div_full_name) VALUES ('" + short_name + "', '" + full_name + "')"
-        #     request = Request()
-        #     request.execute_data(sql_req)
-        #     QMessageBox.information(self, "Вітаю!", "Новий розділ успішно створенно!", QMessageBox.Ok, QMessageBox.Ok)
-        #     self.close()
-        # else:
-        #     QMessageBox.critical(self, "Відсутнє ім'я нового розділу!",
-        #                          "Введіть скорочену назву нового розділу!", QMessageBox.Ok, QMessageBox.Ok)
-
-    def keyPressEvent(self, e):
-        if e.key() == Qt.Key_Escape:
+        else:
+            if self.counter_checkbox.isChecked():
+                sql_req = "INSERT INTO system (div, name_customer, first_price, first_counter) " \
+                          "VALUES ('" + __div + "', '" + __new_customer + "', '" + __base_price + "', '" + __counter + "')"
+            else:
+                sql_req = "INSERT INTO system (div, name_customer, first_price) " \
+                          "VALUES ('" + __div + "', '" + __new_customer + "', '" + __base_price + "')"
+            request = Request()
+            request.execute_data(sql_req)
+            QMessageBox.information(self, "Вітаю!", "Успішно додано нового постачальника!", QMessageBox.Ok, QMessageBox.Ok)
             self.close()
+
+
